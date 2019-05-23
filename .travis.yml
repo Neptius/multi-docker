@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t neptius/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run neptius/react-test yarn test --coverage
+
+after_success:
+  - docker build -t neptius/multi-client ./client
+  - docker build -t neptius/multi-nginx ./nginx
+  - docker build -t neptius/multi-server ./server
+  - docker build -t neptius/multi-worker ./worker
+  
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  - docker push neptius/multi-client
+  - docker push neptius/multi-nginx
+  - docker push neptius/multi-server
+  - docker push neptius/multi-worker
