@@ -20,3 +20,16 @@ after_success:
   - docker push neptius/multi-nginx
   - docker push neptius/multi-server
   - docker push neptius/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: "eu-west-3"
+  app: "multi-docker"
+  env: "MultiDocker-env"
+  bucket_name: "elasticbeanstalk-eu-west-3-333258488645"
+  bucket_path: "multi-docker"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"

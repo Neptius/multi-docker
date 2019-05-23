@@ -1,0 +1,33 @@
+{
+	"AWSEBDockerrunVersion": 2,
+	"containerDefinitions": [{
+			"name": "client",
+			"image": "neptius/multi-client",
+			"hostname": "client",
+			"essential": false
+		},
+		{
+			"name": "nginx",
+			"image": "neptius/multi-nginx",
+			"hostname": "nginx",
+			"essential": true,
+			"portMappings": [{
+				"hostPort": 80,
+				"containerPort": 80
+			}],
+			"links": ["client", "server"]
+		},
+		{
+			"name": "server",
+			"image": "neptius/multi-server",
+			"hostname": "api",
+			"essential": false
+		},
+		{
+			"name": "worker",
+			"image": "neptius/multi-worker",
+			"hostname": "worker",
+			"essential": false
+		}
+	]
+}
